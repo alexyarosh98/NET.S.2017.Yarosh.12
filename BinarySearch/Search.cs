@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace BinarySearch
             if (arr.Length == 0) return -1;
 
             if (comparer == null) comparer = Comparisions.Default;
+            if(!CheckOrder(arr,comparer)) throw new ArgumentException($"{nameof(arr)} is not an ordered array");
             
 
             int left = 0;
@@ -52,6 +54,15 @@ namespace BinarySearch
             }
 
             return -(1 + left);
+        }
+
+        private static bool CheckOrder<T>(T[] arr,Comparison<T> comparer)
+        {
+            for (int i = 0; i < arr.Length-1; i++)
+            {
+                if (comparer(arr[i],arr[i+1])>0) return false;
+            }
+            return true;
         }
     }
 }

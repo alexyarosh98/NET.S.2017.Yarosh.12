@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using NUnit.Framework;
 
 namespace BinarySearch.Tests
@@ -17,10 +18,17 @@ namespace BinarySearch.Tests
         [TestCase(new[] { -421, 4, 6, 8, 122, 445, 615 }, 4, ExpectedResult = 1)]
         [TestCase(new[] { 1, 4, 7, 10, 14, 415, 655 }, 3, ExpectedResult = -2)]
         [TestCase(new int[0], 3, ExpectedResult = -1)]
-        public static int BinarySearch_Array_DefaultComparison_Index(int[] arr, int value)
+        public static int BinarySearch_ArrayWithDefaultComparison_Index(int[] arr, int value)
         {
             return Search.BinarySearch(arr, value,null);
         }
 
+        [TestCase(new[] {1,4,5,7,0},4)]
+        public static void BinarySearch_NotOrderdArray_ArgumentException(int[]arr, int value)
+        {
+            var ex = Assert.Catch <ArgumentException> (() => Search.BinarySearch(arr, value));
+
+            StringAssert.Contains($"{nameof(arr)} is not an ordered array",ex.Message);
+        }
     }
 }
